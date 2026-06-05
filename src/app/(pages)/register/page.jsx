@@ -13,6 +13,7 @@ import { FaUser } from "react-icons/fa";
 import { MdEmail } from "react-icons/md";
 
 import { RiLockPasswordLine } from "react-icons/ri";
+import toast from "react-hot-toast";
 
 export default function RegisterPage() {
 
@@ -30,15 +31,15 @@ export default function RegisterPage() {
     e.preventDefault();
 
     if (formData.password !== formData.confirmPassword) {
-      alert("Passwords do not match");
+      // alert("Passwords do not match");
+      toast.error("Passwords do not match");
       return;
     }
 
-    e.preventDefault();
-
-  // checkbox validation
+    // checkbox validation
     if (!checked) {
-      alert("Please agree to Terms & Conditions");
+      // alert("Please agree to Terms & Conditions");
+      toast.error("Please agree to Terms & Conditions");
       return;
     }
 
@@ -46,11 +47,9 @@ export default function RegisterPage() {
 
       const res = await fetch("/api/auth/register", {
         method: "POST",
-
         headers: {
           "Content-Type": "application/json",
         },
-
         body: JSON.stringify({
           name: formData.name,
           email: formData.email,
@@ -58,9 +57,14 @@ export default function RegisterPage() {
         }),
       });
 
-      const data = await res.json();
-
-      alert(data.message);
+      let data = { message: "Unexpected server response" };
+      try {
+        data = await res.json();
+      } catch (err) {
+        console.error("Failed to parse JSON response", err);
+      }
+      toast.success(data.message);
+      // alert(data.message);
 
       if (res.ok) {
         window.location.href = "/login";
@@ -126,6 +130,7 @@ export default function RegisterPage() {
 
               <input
                 type="text"
+                value={formData.name}
                 placeholder="Full Name"
                 className="w-full bg-transparent p-4 outline-none"
                 onChange={(e) =>
@@ -149,6 +154,7 @@ export default function RegisterPage() {
 
               <input
                 type="email"
+                value={formData.email}
                 placeholder="Email Address"
                 className="w-full bg-transparent p-4 outline-none"
                 onChange={(e) =>
@@ -172,6 +178,7 @@ export default function RegisterPage() {
 
               <input
                 type="password"
+                value={formData.password}
                 placeholder="Password"
                 className="w-full bg-transparent p-4 outline-none"
                 onChange={(e) =>
@@ -195,6 +202,7 @@ export default function RegisterPage() {
 
               <input
                 type="password"
+                value={formData.confirmPassword}
                 placeholder="Confirm Password"
                 className="w-full bg-transparent p-4 outline-none"
                 onChange={(e) =>
@@ -213,7 +221,7 @@ export default function RegisterPage() {
               <input
                 type="checkbox"
                 checked={checked}
-                onChange={(e)=>setChecked(e.target.checked)}
+                onChange={(e) => setChecked(e.target.checked)}
                 className="mt-1 h-5 w-5 accent-[#08189B]"
               />
 
@@ -262,13 +270,21 @@ export default function RegisterPage() {
           <div className="flex justify-center gap-6">
 
             {/* GOOGLE */}
-            <button
+            {/* <button
               onClick={() => signIn("google")}
               className="rounded-2xl border bg-white p-5 shadow-sm"
             >
 
               <FaGoogle size={35} />
 
+            </button> */}
+
+            <button
+              type="button"
+              onClick={() => signIn("google")}
+              className="rounded-2xl border bg-white p-5 shadow-sm"
+            >
+              <FaGoogle size={35} />
             </button>
 
             {/* APPLE */}

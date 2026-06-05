@@ -10,6 +10,7 @@ import { RiLockPasswordLine } from "react-icons/ri";
 
 import { FaGoogle } from "react-icons/fa";
 import { FaApple } from "react-icons/fa";
+import toast from "react-hot-toast";
 
 export default function LoginPage() {
 
@@ -35,7 +36,8 @@ export default function LoginPage() {
 
       const data = await res.json();
 
-      alert(data.message);
+      // alert(data.message);
+      toast.success(data.message);
 
       if (res.ok) {
         window.location.href = "/dashboard";

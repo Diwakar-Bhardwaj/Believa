@@ -5,7 +5,6 @@ import db from "@/lib/db";
 export async function POST(req) {
   try {
     const body = await req.json();
-
     const { name, email, password } = body;
 
     if (!name || !email || !password) {
@@ -39,8 +38,12 @@ export async function POST(req) {
       { status: 201 }
     );
   } catch (error) {
+    console.error(error);
     return NextResponse.json(
-      { message: "Server error" },
+      {
+        message: "Server error",
+        error: error?.message ?? "Unknown error",
+      },
       { status: 500 }
     );
   }
