@@ -2,6 +2,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import "./globals.css";
 import { Toaster } from "react-hot-toast";
+import Providers from "./providers";
 
 export default function RootLayout({ children }) {
   return (
@@ -10,7 +11,9 @@ export default function RootLayout({ children }) {
         <Navbar />
 
         <main className="flex-1">
+          {/* <Providers> */}
           {children}
+        {/* </Providers> */}
         </main>
 
         <Toaster
