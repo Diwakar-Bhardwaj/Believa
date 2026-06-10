@@ -67,7 +67,7 @@ export default function RegisterPage() {
       // alert(data.message);
 
       if (res.ok) {
-        window.location.href = "/login";
+        window.location.href = "/";
       }
 
     } catch (error) {
@@ -281,7 +281,9 @@ export default function RegisterPage() {
 
             <button
               type="button"
-              onClick={() => signIn("google")}
+              onClick={() => signIn("google", {
+                callbackUrl: "/",
+              })}
               className="rounded-2xl border bg-white p-5 shadow-sm"
             >
               <FaGoogle size={35} />

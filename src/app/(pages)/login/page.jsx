@@ -11,8 +11,13 @@ import { RiLockPasswordLine } from "react-icons/ri";
 import { FaGoogle } from "react-icons/fa";
 import { FaApple } from "react-icons/fa";
 import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 export default function LoginPage() {
+
+  const router = useRouter();
+
+  const [loading, setLoading] = useState(false);
 
   const [formData, setFormData] = useState({
     email: "",
@@ -23,29 +28,36 @@ export default function LoginPage() {
     e.preventDefault();
 
     try {
+      setLoading(true);
 
-      const res = await fetch("/api/auth/login", {
-        method: "POST",
+      const res = await signIn("credentials", {
+        email: formData.email,
 
-        headers: {
-          "Content-Type": "application/json",
-        },
+        password: formData.password,
 
-        body: JSON.stringify(formData),
+        redirect: false,
+        callbackUrl: "/",
+
       });
 
-      const data = await res.json();
-
-      // alert(data.message);
-      toast.success(data.message);
-
-      if (res.ok) {
-        window.location.href = "/dashboard";
+      // if error 
+      if(res.error) {
+        toast.error(res.error);
+        return;
       }
+
+      //success
+      router.push("/");
+      router.refresh();
+
 
     } catch (error) {
       console.log(error);
-    }
+
+    } finally {
+      setLoading(false);
+    };
+
   };
 
   return (
@@ -91,7 +103,9 @@ export default function LoginPage() {
 
           {/* GOOGLE BUTTON */}
           <button
-            onClick={() => signIn("google")}
+            onClick={() => signIn("google", {
+              callbackUrl: "/",
+            })}
             className="mt-8 flex w-full items-center justify-center gap-4 rounded-2xl border bg-white py-4 text-lg font-semibold shadow-sm transition hover:scale-[1.01]"
           >
 
