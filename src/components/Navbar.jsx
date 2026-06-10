@@ -18,8 +18,8 @@ export default function Navbar() {
 
   const navLinks = [
     { href: "/", label: "Home" },
-    { href: "/login", label: "Sign In" },
-    { href: "/register", label: "Register" },
+    { href: "/login", label: "Login" },
+    // { href: "/register", label: "Register" },
     { href: "/profile", label: "Profile" },
     { href: "/aiguide", label: "Ai Guide" },
   ];
