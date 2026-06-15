@@ -28,7 +28,7 @@ export default function DashboardLayout({ children }) {
             <span className="font-serif font-bold text-xl text-amber-800 tracking-wide">Believa</span>
           </div>
 
-          <nav className="space-y-1">
+          <nav className="space-y-1" >
             {navItems.map((item) => {
               const Icon = item.icon;
               const isActive = pathname === item.href;
